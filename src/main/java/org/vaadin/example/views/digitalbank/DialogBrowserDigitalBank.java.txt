@@ -1,0 +1,136 @@
+package org.vaadin.example.views.digitalbank;
+
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.Footer;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Header;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.theme.lumo.Lumo;
+
+@CssImport("./styles/my-dialog.css")
+public class DialogBrowserDigitalBank extends Dialog {
+    public String DOCK = "dock";
+    public String FULLSCREEN = "fullscreen";
+
+    private boolean isDocked = false;
+    private boolean isFullScreen = false;
+
+    private Header header;
+    private Button min;
+    private Button max;
+
+    private VerticalLayout content;
+    public Footer footer;
+
+
+
+    public DialogBrowserDigitalBank(){
+        setDraggable(true);
+        setModal(false);
+        setResizable(true);
+
+        // Dialog theming
+        getElement().getThemeList().add("my-dialog");
+        setWidth("800px");
+
+        // Accessibility
+        getElement().setAttribute("aria-labelledby", "dialog-title");
+
+        // Header
+        H2 title = new H2("Consulta Extracto de Caja de Ahorro");
+        title.addClassName("dialog-title");
+
+        min = new Button(VaadinIcon.DOWNLOAD_ALT.create());
+        min.addClickListener(event -> minimise());
+
+        max = new Button(VaadinIcon.EXPAND_SQUARE.create());
+        max.addClickListener(event -> maximise());
+
+        //////////////////
+
+        Button close = new Button(VaadinIcon.CLOSE_BIG.create());
+        close.addClickListener(event -> close());
+
+        header = new Header(title,  close);
+        header.getElement().getThemeList().add(Lumo.DARK);
+        add(header);
+
+        content = new VerticalLayout(layoutBrowser());
+        content.addClassName("dialog-content");
+        content.setAlignItems(FlexComponent.Alignment.STRETCH);
+        add(content);
+
+        // Footer
+        Button btnClose = new Button("Cerrar");
+        btnClose.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_ERROR);
+        btnClose.addClickListener(event -> close());
+        footer = new Footer(btnClose);
+        add(footer);
+
+        // Button theming
+        for (Button button : new Button[] { min, max, close }) {
+            button.addThemeVariants(ButtonVariant.LUMO_CONTRAST, ButtonVariant.LUMO_TERTIARY);
+        }
+
+    }
+
+    private VerticalLayout layoutBrowser(){
+        VerticalLayout layout = new VerticalLayout();
+        String url = "https://web.bankingly.com/Administration.WebUI/Pages/General/Login.aspx?ID=LaPromotora";
+//        browser = new BrowserOpener();
+//        browser.setContent(new Button("click this button to open"));
+//        browser.setUrl(url);
+//
+//        layout.add(browser);
+        layout.setSizeFull();
+        return layout;
+    }
+
+    private void minimise() {
+        if (isDocked) {
+            initialSize();
+        } else {
+            if (isFullScreen) {
+                initialSize();
+            }
+            min.setIcon(VaadinIcon.UPLOAD_ALT.create());
+            getElement().getThemeList().add(DOCK);
+            setWidth("620px");
+        }
+        isDocked = !isDocked;
+        isFullScreen = false;
+        content.setVisible(!isDocked);
+//        footer.setVisible(!isDocked);
+    }
+
+    private void initialSize() {
+        min.setIcon(VaadinIcon.DOWNLOAD_ALT.create());
+        getElement().getThemeList().remove(DOCK);
+        max.setIcon(VaadinIcon.EXPAND_SQUARE.create());
+        getElement().getThemeList().remove(FULLSCREEN);
+        setHeight("auto");
+        setWidth("600px");
+    }
+
+    private void maximise() {
+        if (isFullScreen) {
+            initialSize();
+        } else {
+            if (isDocked) {
+                initialSize();
+            }
+            max.setIcon(VaadinIcon.COMPRESS_SQUARE.create());
+            getElement().getThemeList().add(FULLSCREEN);
+            setSizeFull();
+            content.setVisible(true);
+//            footer.setVisible(true);
+        }
+        isFullScreen = !isFullScreen;
+        isDocked = false;
+    }
+}

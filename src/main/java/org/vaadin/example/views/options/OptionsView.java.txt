@@ -1,0 +1,107 @@
+package org.vaadin.example.views.options;
+
+import org.vaadin.example.views.example.DemoView;
+import com.vaadin.flow.component.AttachEvent;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.PasswordField;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.theme.Theme;
+import com.vaadin.flow.theme.lumo.Lumo;
+import de.mekaso.vaadin.addons.Carousel;
+import org.vaadin.erik.SlideMode;
+import org.vaadin.erik.SlideTab;
+import org.vaadin.erik.SlideTabBuilder;
+import org.vaadin.erik.SlideTabPosition;
+
+import java.util.Arrays;
+
+@PageTitle("Opciones")
+@Route(value = "uno")
+@Theme(value = Lumo.class, variant = Lumo.DARK)
+public class OptionsView extends Div {
+    private static final String BACKGROUND = "hsla(%s, 100%%, 50%%, 0.8)";
+
+//    @Override
+//    protected void onAttach(AttachEvent attachEvent){
+//        UI.getCurrent().getPage().executeJs("javascript:window.close('','_parent','');");
+//    }
+
+    public OptionsView() {
+        Carousel carousel = Carousel.create();
+
+//                .withAutoplay()
+//                .withDuration(5, TimeUnit.SECONDS);
+// adjust the width and height (optionally)
+//        carousel.setWidth("1200px");
+        carousel.setHeight("875px");
+        carousel.setWidthFull();
+        TextField textField = new TextField("INGRESE DATOS");
+
+
+        Image image = new Image("https://picsum.photos/600/400", "A Random Image");
+        carousel.add(textField);
+        carousel.add(createSimpleDiv(1));
+        carousel.add(createGrid());
+        carousel.add(createLoginForm());
+
+        add(carousel);
+    }
+
+
+    private Div createSimpleDiv(Integer value) {
+        Div content = new Div();
+        int tempcolor = value * 40;
+        String background = String.format(BACKGROUND, tempcolor);
+        content.getStyle().set("background", background);
+        content.add(new H1(String.valueOf(value)));
+        return content;
+    }
+
+    private VerticalLayout createLoginForm() {
+        VerticalLayout loginForm = new VerticalLayout();
+//        int tempcolor = 5 * 40;
+//        String background = String.format(BACKGROUND, tempcolor);
+//        loginForm.getStyle().set("background", background);
+        loginForm.setSizeUndefined();
+        loginForm.getStyle().set("background", "black");
+        loginForm.setMargin(true);
+        Button button = new Button("Login");
+        loginForm.add(new TextField("Username"), new PasswordField("Password"), button );
+        loginForm.getStyle().set("border", "1px solid #efefef");
+        button.addClickListener(click -> UI.getCurrent().getPage().executeJs("javascript:window.close('','_parent','');"));
+        return loginForm;
+    }
+
+    private VerticalLayout createGrid(){
+        VerticalLayout content = new VerticalLayout();
+        content.setId("right-panel-bottom-content");
+        content.setWidth("600px");
+        H2 title = new H2("CAJAS DE AHORRO" );
+
+        Grid<DemoView.Test> testGrid = new Grid<>(DemoView.Test.class);
+        testGrid.setItems(Arrays.asList(
+                new DemoView.Test("Aaaa", "Aaaaaaaa", "aaa@aaa.com", 0),
+                new DemoView.Test("Bbbb", "Bbbbbbbb", "bbb@bbb.com", 1),
+                new DemoView.Test("Cccc", "Cccccccc", "ccc@ccc.com", 2),
+                new DemoView.Test("Dddd", "Dddddddd", "ddd@ddd.com", 3),
+                new DemoView.Test("Eeee", "Eeeeeeee", "eee@eee.com", 4),
+                new DemoView.Test("Ffff", "Ffffffff", "fff@fff.com", 5),
+                new DemoView.Test("Gggg", "Gggggggg", "ggg@ggg.com", 6),
+                new DemoView.Test("Hhhh", "Hhhhhhhh", "hhh@hhh.com", 7)
+        ));
+
+        content.add(title,testGrid);
+        return content;
+    }
+
+}

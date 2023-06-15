@@ -1,0 +1,39 @@
+.button-font{
+    font-size: 24pt;
+}
+
+.button-font-trf{
+    font-size: 24pt;
+    color: #0D416C;
+    background-color: midnightblue;
+    width: 20%;
+    height: 80px;
+}
+
+.title-header{
+    color: #0D416C;
+    font-family: "HoloLens MDL2 Assets";
+
+}
+.text-color{
+    color: midnightblue;
+
+}
+.text-status{
+    color: darkred;
+    font-size: small;
+}
+
+.rounded-corners {
+    border-radius: 135px 135px 135px 135px;
+    /*border-color: #0D416C;*/
+    /*border-top-color : #0D416C;*/
+    /*border-style: solid;*/
+    /*width: 300px;*/
+    /*padding: 0.5em;*/
+    /*margin: 0.5em;*/
+    /*bgcolor:white;*/
+}
+/*.backgroundimage {*/
+/*    background: url("frontend/styles/background.jpg") !important;*/
+/*}*/
