@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Mapper
 public interface PaymentPlanMapper {
@@ -16,13 +17,19 @@ public interface PaymentPlanMapper {
 
     @Select(" select * from prppg " +
             " where prppgnpre = #{numberLoan} " +
-            " and prppgfech < #{dayPayment}")
+            " and prppgfech < #{datePayment}")
     List<PaymentPlan> findByNumberLoanAndDatePreviuos(@Param("numberLoan") Integer numberLoan,
-                                                      @Param("datePayment") Date dayPayment);
+                                                      @Param("datePayment") Date datePayment);
 
     @Select(" select * from prppg " +
             " where prppgnpre = #{numberLoan} " +
-            " and prppgfech > #{dayPayment}")
+            " and prppgfech > #{datePayment}")
     List<PaymentPlan> findByNumberLoanAndDateSubsequent(@Param("numberLoan") Integer numberLoan,
-                                              @Param("datePayment") Date dayPayment);
+                                              @Param("datePayment") Date datePayment);
+
+    @Select(" select * from prppg " +
+            " where prppgnpre = #{numberLoan} " +
+            " and prppgfech = #{datePayment}")
+    Optional<PaymentPlan> findByNumberLoanAndDate(@Param("numberLoan") Integer numberLoan,
+                                                          @Param("datePayment") Date datePayment);
 }

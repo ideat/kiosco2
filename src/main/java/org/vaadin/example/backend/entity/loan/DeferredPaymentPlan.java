@@ -1,10 +1,12 @@
 package org.vaadin.example.backend.entity.loan;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
+@AllArgsConstructor
 public class DeferredPaymentPlan {
 
     private Date prdipfreg;
@@ -16,4 +18,6 @@ public class DeferredPaymentPlan {
     private Double prdipcuot;
 
     private String prdipmpag;
+
+
 }

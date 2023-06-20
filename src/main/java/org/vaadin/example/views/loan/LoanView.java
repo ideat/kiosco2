@@ -1,15 +1,15 @@
 package org.vaadin.example.views.loan;
 
+import org.vaadin.example.backend.entity.loan.ChargesDeferred;
 import org.vaadin.example.backend.entity.loan.LoanAccounts;
+import org.vaadin.example.backend.entity.loan.dto.PaymentPlanDeferredDto;
 import org.vaadin.example.backend.entity.sec.kiosco.ProductKiosco;
 import org.vaadin.example.backend.entity.loan.dto.BalanceLoanDto;
 import org.vaadin.example.backend.entity.loan.dto.PaymentPlanDto;
 import org.vaadin.example.backend.entity.sec.StageHistoryCreditRequestDto;
 import org.vaadin.example.backend.entity.sec.SummaryCreditRequestStage;
 import org.vaadin.example.backend.rest.SecService;
-import org.vaadin.example.backend.service.loan.BalanceLoanService;
-import org.vaadin.example.backend.service.loan.LoanAccountsService;
-import org.vaadin.example.backend.service.loan.PaymentPlanService;
+import org.vaadin.example.backend.service.loan.*;
 import org.vaadin.example.views.report.FormReportView;
 import org.vaadin.example.views.util.PrinterReportJasper;
 import org.vaadin.example.views.util.UIUtils;
@@ -40,10 +40,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.WeakHashMap;
+import java.util.*;
 
 //@Theme(value = Lumo.class, variant = Lumo.DARK)
 @Component
@@ -63,6 +60,12 @@ public class LoanView {
 
     @Autowired
     private SecService secService;
+
+    @Autowired
+    private ChargesDeferredService chargesDeferredService;
+
+    @Autowired
+    private PaymentPlanDeferredService paymentPlanDeferredService;
 
     private List<LoanAccounts> loanAccountsList;
     private List<SummaryCreditRequestStage> summaryCreditRequestStageList;
@@ -229,31 +232,14 @@ public class LoanView {
         });
 
         btnPaymentPlan.addClickListener(click -> {
-           List<PaymentPlanDto> collection = new ArrayList<>();
-            PaymentPlanDto paymentPlanDto = paymentPlanService.getPaymentPlan(loanAccounts.getNumberLoan());
-            collection.add(paymentPlanDto);
-
-            InputStream stream = getClass().getResourceAsStream("/template-report/loan/paymentPlan.jrxml");
-            String pathLogo =  getClass().getResource("/template-report/img/logo.png").getPath();
-            String pathSubreport ="template-report/loan/";
-            Map<String,Object> params = new WeakHashMap<>();
-            params.put("logo",pathLogo);
-            params.put("path_subreport", pathSubreport);
-
-            byte[] b = new byte[0];
-            try {
-                b = PrinterReportJasper.imprimirComoPdf(stream,collection,params);
-            } catch (JRException e) {
-                e.printStackTrace();
+            Optional<ChargesDeferred> chargesDeferredList = chargesDeferredService.findInterestByLoanNumber(loanAccounts.getNumberLoan());
+            if(chargesDeferredList.isPresent()){
+                createDeferredPaymentPlan(loanAccounts,chargesDeferredList.get().getPrdiffreg());
+            }else{
+                createNormalPaymentPlan(loanAccounts);
             }
-            InputStream is = new ByteArrayInputStream(b);
-            try {
-                byte[] p = IOUtils.toByteArray(is);
-                FormReportView contentReport = new FormReportView("EXTRACTO", p);
-                contentReport.open();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+
         });
 
         HorizontalLayout layout = new HorizontalLayout();
@@ -262,6 +248,64 @@ public class LoanView {
 
         return layout;
     }
+
+    private void createNormalPaymentPlan(LoanAccounts loanAccounts) {
+        List<PaymentPlanDto> collection = new ArrayList<>();
+        PaymentPlanDto paymentPlanDto = paymentPlanService.getPaymentPlan(loanAccounts.getNumberLoan());
+        collection.add(paymentPlanDto);
+
+        InputStream stream = getClass().getResourceAsStream("/template-report/loan/paymentPlan.jrxml");
+        String pathLogo =  getClass().getResource("/template-report/img/logo.png").getPath();
+        String pathSubreport ="template-report/loan/";
+        Map<String,Object> params = new WeakHashMap<>();
+        params.put("logo",pathLogo);
+        params.put("path_subreport", pathSubreport);
+
+        byte[] b = new byte[0];
+        try {
+            b = PrinterReportJasper.imprimirComoPdf(stream,collection,params);
+        } catch (JRException e) {
+            e.printStackTrace();
+        }
+        InputStream is = new ByteArrayInputStream(b);
+        try {
+            byte[] p = IOUtils.toByteArray(is);
+            FormReportView contentReport = new FormReportView("EXTRACTO", p);
+            contentReport.open();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createDeferredPaymentPlan(LoanAccounts loanAccounts, Date cutDate){
+        List<PaymentPlanDeferredDto> collection = new ArrayList<>();
+        collection.add(paymentPlanDeferredService
+                .getPaymentPlanDeferret(loanAccounts.getNumberLoan(), cutDate));
+
+        InputStream stream = getClass().getResourceAsStream("/template-report/loan/paymentPlanDeferred.jrxml");
+        String pathLogo =  getClass().getResource("/template-report/img/logo.png").getPath();
+        String pathSubreport ="template-report/loan/";
+        Map<String,Object> params = new WeakHashMap<>();
+        params.put("logo",pathLogo);
+        params.put("path_subreport", pathSubreport);
+
+        byte[] b = new byte[0];
+        try {
+            b = PrinterReportJasper.imprimirComoPdf(stream,collection,params);
+        } catch (JRException e) {
+            e.printStackTrace();
+        }
+        InputStream is = new ByteArrayInputStream(b);
+        try {
+            byte[] p = IOUtils.toByteArray(is);
+            FormReportView contentReport = new FormReportView("EXTRACTO", p);
+            contentReport.open();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     private VerticalLayout  createGridRequest(){
         VerticalLayout layoutGrid = new VerticalLayout();

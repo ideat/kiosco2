@@ -13,6 +13,8 @@ public class DetailFeeChargesDeferredDto {
 
     private Date dueDate;
 
+    private Date processDate;
+
     private Double principal;
 
     private Double interest;
@@ -23,5 +25,10 @@ public class DetailFeeChargesDeferredDto {
 
     private Double total;
 
+    private Double principalPending;
+    private Double interestPending;
+    private Double feePending;
+    private Double chargesPending;
+    private Double totalPending;
 
 }

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class PaymentPlanService {
@@ -79,17 +80,18 @@ public class PaymentPlanService {
         }
 
         List<DeferredPaymentPlanDto> deferredPaymentPlanDtoList = new ArrayList<>();
-        List<DeferredPaymentPlan> auxList = deferredPaymentPlanList.stream()
+        List<DeferredPaymentPlan> principalList = deferredPaymentPlanList.stream()
                 .filter(f -> f.getPrdipcarg().equals(420) ||
                         f.getPrdipcarg().equals(421) || f.getPrdipcarg().equals(424) || f.getPrdipcarg().equals(425))
                 .collect(Collectors.toCollection( () ->
                         new TreeSet<>(Comparator.comparing(DeferredPaymentPlan::getPrdipfreg))))
                 .stream().collect(Collectors.toList());
-       auxList.sort(Comparator.comparing(DeferredPaymentPlan::getPrdipfreg));
+
+       principalList.sort(Comparator.comparing(DeferredPaymentPlan::getPrdipfreg));
 
 
         int i = 0;
-        for(DeferredPaymentPlan d: auxList){
+        for(DeferredPaymentPlan d: principalList){
             DeferredPaymentPlanDto dto = new DeferredPaymentPlanDto();
 
             dto.setDeferredDate(d.getPrdipfreg());
@@ -114,6 +116,43 @@ public class PaymentPlanService {
             deferredPaymentPlanDtoList.add(dto);
         }
 
+        List<DeferredPaymentPlan> interestList = deferredPaymentPlanList.stream()
+                .filter(f -> f.getPrdipcarg().equals(422) ||
+                        f.getPrdipcarg().equals(423) || f.getPrdipcarg().equals(426) || f.getPrdipcarg().equals(427))
+                .collect(Collectors.toCollection( () ->
+                        new TreeSet<>(Comparator.comparing(DeferredPaymentPlan::getPrdipfreg))))
+                .stream().collect(Collectors.toList());
+
+        for(DeferredPaymentPlan deferredPaymentPlan:interestList){
+            Optional<DeferredPaymentPlanDto> optionalDeferredPaymentPlan = deferredPaymentPlanDtoList.stream()
+                    .filter(d -> d.getDeferredDate().equals(deferredPaymentPlan.getPrdipfreg()))
+                    .findFirst();
+
+            if(optionalDeferredPaymentPlan.isEmpty()){
+                DeferredPaymentPlanDto dto = new DeferredPaymentPlanDto();
+                dto.setDeferredDate(deferredPaymentPlan.getPrdipfreg());
+                dto.setExpireDate(deferredPaymentPlan.getPrdipfpag());
+                dto.setPrincipal(0.0);
+                Double interest = deferredPaymentPlanList.stream()
+                        .filter(f -> f.getPrdipfreg().equals(deferredPaymentPlan.getPrdipfreg()) && (f.getPrdipcarg().equals(422) ||
+                                f.getPrdipcarg().equals(423) || f.getPrdipcarg().equals(426) || f.getPrdipcarg().equals(427)))
+                        .mapToDouble(DeferredPaymentPlan::getPrdipcuot).sum();
+                dto.setInterest(interest);
+                dto.setTotal(interest);
+                dto.setCharge(0.0);
+                dto.setFee(interest);
+                dto.setIsPayment(deferredPaymentPlan.getPrdipmpag());
+                deferredPaymentPlanDtoList.add(dto);
+            }
+        }
+
+        deferredPaymentPlanDtoList = deferredPaymentPlanDtoList.stream()
+                .sorted(Comparator.comparing(DeferredPaymentPlanDto::getDeferredDate))
+                .collect(Collectors.toList());
+
+        List<DeferredPaymentPlanDto> finalDeferredPaymentPlanDtos = deferredPaymentPlanDtoList;
+        IntStream.range(0,deferredPaymentPlanDtoList.size())
+                .forEach(p -> finalDeferredPaymentPlanDtos.get(p).setSecuence(p+1));
 
         PaymentPlanDto paymentPlanDto = new PaymentPlanDto();
         paymentPlanDto.setLoanNumber(headerPaymentPlan.getPrmprnpre());
@@ -140,7 +179,7 @@ public class PaymentPlanService {
         paymentPlanDto.setPaymentPeriodInterest(headerPaymentPlan.getPrmprppgi());
         paymentPlanDto.setFeeType(headerPaymentPlan.getPrcondesc());
         paymentPlanDto.setDetailPaymentPlanDtoList(detailPaymentPlanDtoList);
-        paymentPlanDto.setDeferredPaymentPlanDtoList(deferredPaymentPlanDtoList);
+        paymentPlanDto.setDeferredPaymentPlanDtoList(finalDeferredPaymentPlanDtos);
 
         return paymentPlanDto;
     }

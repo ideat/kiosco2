@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="detailPaymentPlan" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f99a133d-7172-4b2f-a7df-0f3c3d7af70a">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="balanceInterest" class="java.lang.Double"/>
+	<field name="interestDeferred" class="java.lang.Double"/>
+	<field name="totalInterest" class="java.lang.Double"/>
+	<field name="numberFeesInterest" class="java.lang.Integer"/>
+	<field name="amountFeeInterest" class="java.lang.Double"/>
+	<field name="balanceDeferred" class="java.lang.Double"/>
+	<field name="chargeToDeferred" class="java.lang.Double"/>
+	<field name="totalChargeToDeferred" class="java.lang.Double"/>
+	<field name="numberFeesCharges" class="java.lang.Integer"/>
+	<field name="amountFeeCharges" class="java.lang.Double"/>
+	<field name="endPeriodGrace" class="java.util.Date"/>
+	<field name="numberCurrentFee" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="120" splitType="Stretch">
+			<staticText>
+				<reportElement x="130" y="10" width="277" height="12" uuid="4213c463-57c4-42b5-9591-4e2b15dcd5bf">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[3.-INICIO DE PRORRATEO DE CARGOS E INTERESES POR PERIODO DE GRACIA]]></text>
+			</staticText>
+			<textField pattern="#,##0.00#;#,##0.00#-">
+				<reportElement x="196" y="29" width="63" height="11" uuid="727a5aa7-c8e3-4662-bf56-dbd7041192f1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{balanceInterest}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="94" y="29" width="99" height="11" uuid="efdf1db6-46f4-4b5e-a1f0-23465393b582"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[SALDO INTERES PRORRATEADO:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00#;#,##0.00#-">
+				<reportElement x="196" y="40" width="63" height="11" uuid="7b4cb661-0314-4b08-b63d-b82e5cbbcf12">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{interestDeferred}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="94" y="40" width="99" height="11" uuid="77740dec-0ee8-459f-b910-d1218785e8f8"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[INTERES POR PRORRATEAR:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00#;#,##0.00#-">
+				<reportElement x="196" y="51" width="63" height="11" uuid="7c1ca1d3-ed69-4198-be84-fa91ad3d865a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalInterest}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="94" y="51" width="99" height="11" uuid="96c5bc81-0b5b-4b39-a0de-f4360f283248">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[TOTAL INTERES PRORRATEADO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="270" y="52" width="30" height="11" uuid="e9d4e3e6-8cc4-4466-9583-e58a4fa264cf">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[CUOTAS:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="300" y="52" width="30" height="11" uuid="c826281b-2a69-47d1-8ee9-ef22b0360f93">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numberFeesInterest}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="336" y="52" width="88" height="11" uuid="a89bfbf1-8acf-4027-8999-667250469ae3"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[MONTO DE CADA CUOTA:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00#;#,##0.00#-">
+				<reportElement x="425" y="52" width="63" height="11" uuid="d6e93005-e7c5-4a01-ac12-3c06129026c5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amountFeeInterest}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;#,##0.00#-">
+				<reportElement x="196" y="71" width="63" height="11" uuid="2b96ae89-8d2c-4675-b3ae-d4126bb40ceb">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{balanceDeferred}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="94" y="71" width="99" height="11" uuid="88d4a997-7432-4c44-ad73-a28202caf422"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[SALDO CARGO PRORRATEADO:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00#;#,##0.00#-">
+				<reportElement x="196" y="82" width="63" height="11" uuid="c4ac3ad9-a911-4094-8f1e-2293b089188c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chargeToDeferred}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="94" y="82" width="99" height="11" uuid="4a940fb2-cc87-4529-92d9-322ea734c061"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[CARGO POR PRORRATEAR:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00#;#,##0.00#-">
+				<reportElement x="196" y="93" width="63" height="11" uuid="a276aa97-24bf-49cd-911f-13ccb8282481">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalChargeToDeferred}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="94" y="93" width="99" height="11" uuid="1bfc7293-b087-4680-b767-042a62c245b3"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[TOTAL CARGO PRORRATEADO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="270" y="93" width="30" height="11" uuid="910c85ef-2499-4f24-b6cf-0e6a2bf1296c"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[CUOTAS:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="300" y="93" width="30" height="11" uuid="35f5b3e4-7336-44ae-a3b1-e3269feb8e28">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numberFeesCharges}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="336" y="93" width="88" height="11" uuid="3a1d2afa-f37a-46e6-847f-9123bcee9d7b"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[MONTO DE CADA CUOTA:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00#;#,##0.00#-">
+				<reportElement x="425" y="93" width="63" height="11" uuid="93bf9d50-e8d3-4374-a8f7-80a908531a59">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amountFeeCharges}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="94" y="105" width="99" height="11" uuid="743293d5-e37d-4c0c-8385-2ea648d2983c"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[FIN DE PER. GRACIA:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyyy">
+				<reportElement x="196" y="105" width="63" height="11" uuid="cb7f2ec3-5d35-4fc7-9d02-70e18393b734">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{endPeriodGrace}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="10" width="20" height="11" uuid="b327bc6b-cf8a-469c-929c-ba7d1781eced">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numberCurrentFee}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="7" splitType="Stretch"/>
+	</summary>
+</jasperReport>

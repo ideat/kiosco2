@@ -22,4 +22,6 @@ public class DetailChargesDeferred {
     private Integer prdipccon;
 
     private Integer prdipmrcb;
+
+    private Date prdipfpro;
 }

@@ -1,6 +1,7 @@
 package org.vaadin.example.backend.entity.loan.dto;
 
 import lombok.Data;
+import org.vaadin.example.backend.entity.loan.HeaderChargeDeferred;
 
 import java.util.Date;
 import java.util.List;
@@ -36,7 +37,21 @@ public class PaymentPlanDeferredDto {
 
     private String feeType;
 
+    private Double accumulateCapital;
+
+    private Double accumulateInterest;
+
+    private Double accumulateFee;
+
+    private Double accumulateCharges;
+
+    private Double accumulateTotal;
+
     private List<DetailPaymentPlanDto> detailPaymentPlanDtoList;
 
+    private List<HeaderChargeDeferred> headerChargeDeferredList;
 
+    private List<DetailChargesDiferredPaymentPlanDto> detailChargesDiferredPaymentPlanDtoList;
+
+    private List<DetailFeeChargesDeferredDto> detailFeeChargesDeferredDtoList;
 }

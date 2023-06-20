@@ -28,4 +28,6 @@ public class HeaderChargeDeferred {
     private Double amountFeeCharges;
 
     private Date  endPeriodGrace;
+
+    private Integer numberCurrentFee;
 }

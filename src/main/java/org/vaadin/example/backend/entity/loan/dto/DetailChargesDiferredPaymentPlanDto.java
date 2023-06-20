@@ -7,7 +7,7 @@ import java.util.Date;
 @Data
 public class DetailChargesDiferredPaymentPlanDto {
 
-    private Integer secuence;
+    private Integer sequence;
 
     private Date deferredDate;
 

@@ -12,10 +12,11 @@ public interface DetailChargesDeferredMapper {
 
     @Select(" select prdipnpre, prdipcarg, prdipfpag, " +
             " prdipcuot, prdipfreg, prdippref, prdipccon," +
-            " prdipmrcb " +
+            " prdipmrcb, prdipfpro " +
             " from prdip " +
             " where prdipnpre = #{loanNumber} " +
-            " and prdipcarg = #{code} " +
+            " and prdipcarg = #{code}" +
+            " and prdipmrcb = 0 " +
             " order by prdipcarg, prdipfpag ")
     List<DetailChargesDeferred> findByLoanNumberAndCode(@Param("loanNumber") Integer loanNumber,
                                                         @Param("code") Integer code);
